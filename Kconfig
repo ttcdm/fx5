@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0
+config DRM_VISUALIZEFX
+	tristate "HP VISUALIZE fx5/fx10 (scaffold, non-functional)"
+	depends on DRM && PCI
+	select DRM_KMS_HELPER
+	select DRM_GEM_SHMEM_HELPER
+	select I2C
+	select I2C_ALGOBIT
+	help
+	  Scaffold DRM/KMS driver for the HP VISUALIZE fx5/fx10 ("Lego")
+	  workstation graphics accelerator (PCI 103c:100a).
+
+	  This is a starting point for a port, NOT a working driver. Mode
+	  setting and all hardware programming are unimplemented (see the GAP
+	  markers in the source and PORT_PLAN.md). For a usable 2D console on
+	  these boards today, the on-card Matrox G200 is handled by the mgag200
+	  driver; enable that instead.
+
+	  If unsure, say N.
