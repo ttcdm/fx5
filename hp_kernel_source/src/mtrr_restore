@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "disable=0" > /proc/mtrr
+echo "disable=1" > /proc/mtrr
+echo "disable=2" > /proc/mtrr
+echo "disable=3" > /proc/mtrr
+echo "disable=4" > /proc/mtrr
+echo "disable=5" > /proc/mtrr
+echo "disable=6" > /proc/mtrr
+echo "disable=7" > /proc/mtrr
+echo "base=0x00000000 size=0x10000000 type=write-back" > /proc/mtrr
+cat /proc/mtrr

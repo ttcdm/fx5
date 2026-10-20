@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# description: Load HP graphics kernel
+# chkconfig: 2345 01 99
+# modulename: hpgraphics
+# lockfile: /var/lock/subsys/hpgraphics
+# hide: true
+
+# Load utilities
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+
+case "$1" in
+  start)
+        echo -n "Loading hpgfx kernel extension: "
+        if [ `/sbin/lsmod | grep hpgfx | wc -l` -eq 0 ]
+        then
+          /sbin/insmod -v hpgfx
+          RETVAL=$?
+        fi
+        touch /var/lock/subsys/hpgraphics
+        echo
+        ;;
+  stop)
+        echo -n "Unloading hpgfx kernel extension: "
+        /sbin/rmmod hpgfx
+        RETVAL=$?
+        rm -f /var/lock/subsys/hpgraphics
+        if [ -f /dev/hpgfx ]; then
+            rm -f /dev/hpgfx
+        fi
+        echo
+        ;;
+  restart|reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+  *)
+        echo "Usage: hpgraphics {start|stop|restart|reload}"
+        exit 1
+esac
+
+exit $RETVAL
+

@@ -1,0 +1,204 @@
+hp workstation – fx5 and fx10 driver for Windows 2000
+This driver requires Windows 2000 Service Pack 1 or later.
+
+This software applies to:
+System(s):
+hp Visualize x class (733MHz, 800MHz, 866MHz, 933MHz, 1GHz)
+hp Visualize p class (733MHz, 800MHz, 866MHz, 1GHz)
+Operating system(s):
+Microsoft Windows XP 32-bit
+Microsoft Windows 2000
+Languages:
+[x] English, [ ] French, [ ] Italian, [ ] German,  [ ] Spanish, [ ] Swedish, [ ] Norwegian, [ ] Finnish, [ ] Danish
+Certifications:
+None
+Version
+Current version
+File name: fx_w2k_118b.exe
+Version: 1.18
+Release Date: 6/27/02
+Version replaced
+File name: fx1_16w2k.exe
+Version: 1.16
+Release Date: 10/04/01
+How to determine your current version
+Current Version
+1.
+Right click on the “Desktop”
+2.
+Select “Properties”.
+3.
+Click the “Settings” tab.
+4.
+Click the “Advanced” button.
+5.
+Select “About”.
+6.
+The driver version will be displayed.
+
+Availability of this software
+[x] This software is made available on the web only
+[ ] This software is made available on the web and on factory-preloaded software
+[ ] This software is made available on the web and on CDs shipped with the product
+[ ] This software is made available on the web, in factory-preloaded software, and on CDs shipped with the product.
+Detailed description
+New features
+This driver has base functionality in Windows XP Professionl.
+Fixed issues
+
+Updated diagnostics CRC file for current driver version.   No change to driver.  (6/27/02)
+
+Maya Fix:
+Some textured models would cause the driver to download textures more then needed, thus limiting performance. This has been fixed.
+
+Miscellaneous Fixes:
+Corrected problem with dragging icons or filenames from explorer window that would not blend properly with window's desktop.
+
+Corrected problem that caused scaled OpenGL glDrawPixels to display wrong when the desktop is in 16bpp mode.
+
+Known issues and limitations
+None
+Upgrade recommendation
+[x] Recommended
+[ ] Critical
+Installation instructions
+
+
+First Time Driver Installation Instructions
+1.
+Extract “fx_w2k_118.exe” to “c:\drivers\video\fx\w2k\118”
+2.
+When the "Found New Hardware Wizard" window opens, click “Next” to continue.
+3.
+Select "Display a list of known drivers for this device" and then click “Next”.
+4.
+Click the “Have Disk” button and browse to the directory that contains the HP Visualize fx driver.
+5.
+Select the “hpfxlw2k.inf” file. Click “Open” and then “OK”.
+6.
+This should return you to the "Select a Device Driver" window and "Hewlett-Packard VisualizeFX Series Video" should be highlighted in the list of models. Click “Next”.
+7.
+Click “Yes” to the “Digital Signature Not Found” warning.
+8.
+Click “Finish” to complete the driver update.
+9.
+Reboot the system.
+10.
+To finish configuring the system please see the “Software deployment guidelines” below.
+
+Driver Update Instructions
+1.
+Extract “fx_w2k_118.exe” to “c:\drivers\video\fx\w2k\118”.
+2.
+Right click the “My Computer” icon, and select “Manage”.
+3.
+Select the “Device Manager” box.
+4.
+If there is a “Video Controller” (with a question mark) under the “Other Devices” icon, and the “Display Adapters” icon only shows the “Matrox Graphics Millenium G200”, go to step 5. Else, go to step 6.
+5.
+Double click the “Video Controller” (with the question mark) under the “Other Devices” icon. Go to step 7. 
+6.
+Click on the “Display Adapters” icon and then double click on “Hewlett-Packard VisualizeFX Series Video”. Go to step 7.
+7.
+Select the “Driver” tab and then click the “Update Driver” button.
+8.
+This should start the "Upgrade Device Driver Wizard".  Click “Next”.
+9.
+Select "Display a list of known drivers for this device" and then click “Next”.
+10.
+Click the “Have Disk” button and browse to “c:\drivers\video\fx\w2k\116”.
+11.
+Select the “hpfxlw2k.inf” file. Click “Open” and then “OK”.
+12.
+This should return you to the “Upgrade Device Driver Wizard “and "Hewlett-Packard VisualizeFX Series Video" should be highlighted in the list of models.  Click “Next”.
+13.
+Click “Yes” on the “Digital Signature Not Found” warning.
+14.
+Click “Finish” to complete the driver update.
+15.
+Close the “Properties” window.
+16.
+To finish configuring the system please see the “Software deployment guidelines” below.
+
+System requirements and dependencies
+Windows 2000 Service Pack 1 or later
+Software deployment guidelines
+Post Driver Installation Steps for Windows 2000
+
+1. Verify that VisualizeFX is the Primary Monitor
+
+a. Start the Control Panel: Click Start, point to Settings and select Control Panel.
+b. Double-click on Display and click the Settings tab.
+c. If Hewlett-Packard VisualizeFX Series Video is the only display listed, you are done. 
+d. If two displays are listed (Matrox Graphics Millennium G200 and Hewlett-Packard VisualizeFX Series Video), follow the remaining steps to extend the desktop to VisualizeFX.
+
+NOTE: The Matrox device is part of the VisualizeFX card.  It provides VGA functionality and cannot be used at the same time while using VisualizeFX graphics. Thus, you should not extend the desktop to the Matrox device.
+
+e. Select VisualizeFX in the list of displays.  Check 'Extend my Windows desktop onto the monitor' and 'Use this device as the primary monitor'
+f. Select Matrox Graphics in the list of displays.   Uncheck 'Extend my Windows desktop onto the monitor'
+g. Click the apply button.
+
+2. Disable Mouse Pointer Shadows
+
+The default Windows 2000 mouse pointer may cause problems between the pointer and OpenGL applications. Follow these steps to avoid these problems:
+         
+a. Start the Control Panel: Click Start, point to Settings and select Control Panel.
+b. Double-click on Mouse and click the Pointers tab.
+c. Uncheck 'Enable pointer shadow'
+
+
+Driver Configuration
+
+You should optimize the driver settings to suit the OpenGL application that you are using on your system. This can be done through the driver applet, which is installed automatically with the driver.
+
+1. From the Start menu, click "Settings" then "Control Panel".
+2. Double-click the "Display" icon, click on the Advanced button and select the "Options" tab.
+3. Select your application in the "Application" list box.   Driver settings (viewed on the right) will be configured to best suit your application. If the application you are using is not listed, select "Compatibility Mode".
+4. Click the "Apply" button, then "OK".
+
+For explanations of each setting, click on the question mark (?) in the upper right hand corner of the window and then click on the option for which you want to see an explanation.\
+
+3D StudioMAX version 3 Driver
+
+Copy the hpoglgfx.drv file to the 3D StudioMAX 3 home directory.   (This should be the same directory as the oglgfx.drv file).
+
+Start 3D StudioMAX, and select the Customize->Preferences menu item.  Select the Viewports tab, and select the Choose Driver button in the lower right corner.  Next to the Custom button, you should see a drop down selector.  Select the hpoglgfx.drv  custom driver and click "OK".  Now select the Configure Driver button and configure the driver as follows:
+
+OFF: Redraw Scene on Window Expose
+ON:  Use Triangle Strips
+ON:  Display Wireframe Objects Using Triangle Strips
+ON:  Allow Dual Plane Support
+ON:  Use Incremental Scene Updates
+ON:  Use BGRA pixel format
+ON:  Use Generalized Vertex Arrays
+
+You will need to restart 3D StudioMAX for the changes to take effect.
+
+Uninstallation instructions
+Uninstallation instructions
+1.
+Extract “fx_w2k_118.exe” to “c:\drivers\video\fx\w2k\118”.
+2.
+Click “Start” then “Run”.
+3.
+Type “c:\drivers\video\fx\w2k\118\hpfxlun.exe”.
+4.
+Restart the system.
+Comments
+This driver has base functionality in Windows XP Professional.  Installation is similar to Windows 2000.
+Disclaimer
+The information in this document is subject to change without notice.
+
+Hewlett-Packard makes no warranty of any kind with regard to this material, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. Hewlett-Packard shall not be liable for errors contained herein or for incidental or consequential damages in connection with the furnishing, performance, or use of this material.
+
+This document contains proprietary information that is protected by copyright. All rights are reserved. No part of this document may be reproduced, photocopied, or translated to another language without the prior written consent of Hewlett-Packard Company.
+
+Information for hp support
+
+Special considerations on supported configurations
+- List of qualified & tested systems and Qualification status
+- MS certification status
+
+Known issues for hp support
+
+

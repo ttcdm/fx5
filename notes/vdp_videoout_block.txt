@@ -1,0 +1,169 @@
+/*  Start of Video Display Processor Registers  */
+/*  End of  Video Display Processor Registers  */
+
+/*  Start of Video Display Processor Registers  */
+/*  End of Video Display Processor Registers  */
+
+/*  Start Video Display Processor Registers  */
+#define UB_START_OF_VIDBUS                0xFFFFFFFF /*  Bogus Address Used For .h File Auto Generation */
+#define UB_CP                             0x00400000 /* Cursor Position Register (W) */
+#define UB_CA                             0x00400004 /* Cursor Address Register (W) */
+#define UB_CD                             0x00400008 /* Cursor Data Register (W) */
+#define UB_CF                             0x0040000C /* Cursor Foreground Register (W) */
+#define UB_CB                             0x00400010 /* Cursor Background Register (W) */
+/*  End of  Video Display Processor Registers  */
+
+/*  Start of Video Display Processor Registers  */
+#define B2_CP                             0x00800000 /* Cursor Position Register (RW) */
+#define B2_CA                             0x00800004 /* Cursor Address Register (RW) */
+#define B2_CD                             0x00800008 /* Cursor Data Register (RW) */
+#define B2_CF                             0x0080000C /* Cursor Foreground Register (RW) */
+#define B2_CB                             0x00800010 /* Cursor Background Register (RW) */
+#define B2_PMASK                          0x00800018 /* LUT Plane Mask Register (RW) */
+#define B2_MCS                            0x0080001C /* Midlay Color Map Select Register (RW) */
+#define B2_LLCA                           0x00800020 /* LUT Load Control Address Register (RW) */
+#define B2_LUTD                           0x00800024 /* Look Up Table Register (RW) */
+#define B2_FATTR                          0x0080003C /* Force Attribute Bits Register (RW) */
+#define B2_MV                             0x00800040 /* Misc. Video Register (RW) */
+#define B2_CFG                            0x00800044 /* Configuration Register (RW) */
+#define B2_SCR                            0x00800048 /* Stereo Control Register (RW) */
+#define B2_MPC                            0x0080004C /* Monitor Power Control Register (RW) */
+#define B2_ETG                            0x00800058 /* Early Timing Generator Register (RW) */
+#define B2_VHAL                           0x0080005C /* Vertical / Horizontal Active Length Register (RW) */
+#define B2_HTG                            0x00800060 /* Horizontal Timing Generator Register (RW) */
+#define B2_STG                            0x00800064 /* Serration Timing Generator Register (RW) */
+#define B2_VTG                            0x00800068 /* Vertical Timing Generator Register (RW) */
+#define B2_HS                             0x0080006C /* Horizontal State Register (RW) */
+#define B2_VS                             0x00800070 /* Vertical State Register (RW) */
+#define B2_DTS                            0x00800074 /* Timing & State Register (R) */
+#define B2_SRBMAP0                        0x00800078 /* Stereo Right Front Block BMAP Register (RW) */
+#define B2_SRBMAP1                        0x0080007C /* Stereo Right Back Block BMAP Register (RW) */
+#define B2_VOP                            0x00800080 /* Video Out Position Register (RW) */
+#define B2_VOS                            0x00800084 /* Video Out Size Register (RW) */
+#define B2_VOC                            0x00800088 /* Video Out Control Register (RW) */
+#define B2_VOP1                           0x0080008C /* Video Out Position Register (RW) */
+#define B2_STSA                           0x00800090 /* Showtime CRC Register (RW) */
+#define B2_BLSA                           0x00800094 /* Blither CRC Register (RW) */
+#define B2_PLL_DOT_CTL                    0x008000A0 /* Dot Clock PLL Control Register (RW) */
+#define B2_PLL_DOT_CNT                    0x008000A4 /* Dot Clock PLL Counter Register (RW) */
+#define B2_PLL_CORE_CTL                   0x008000A8 /* Core Clock PLL Control Register (RW) */
+#define B2_PLL_CORE_CNT                   0x008000AC /* Core Clock PLL Counter Register (RW) */
+#define B2_PLL_RAM_CTL                    0x008000B0 /* RAM Clock PLL Control Register (RW) */
+#define B2_PLL_RAM_CNT                    0x008000B4 /* RAM Clock PLL Counter Register (RW) */
+#define B2_PLL_REF_CNT                    0x008000B8 /* PLL Reference Clock Counter Register (RW) */
+#define B2_BLSA_MASK                      0x008000C4 /* BL Signature Analysis Mask Register (RW) */
+#define B2_SA_MASK                        0x008000C8 /* Signature Analysis Mask Register (RW) */
+#define B2_SA_SIG                         0x008000CC /* Signature Analysis Register (RW) */
+#define B2_MON                            0x008000D0 /* Monitor Test Register (RW) */
+#define B2_DDC                            0x008000D4 /* Display Data Channel Register (RW) */
+#define B2_CFS0                           0x00800100 /* Colormap Function Select Register 0 (RW) */
+#define B2_CFS1                           0x00800104 /* Colormap Function Select Register 1 (RW) */
+#define B2_CFS2                           0x00800108 /* Colormap Function Select Register 2 (RW) */
+#define B2_CFS3                           0x0080010C /* Colormap Function Select Register 3 (RW) */
+#define B2_CFS4                           0x00800110 /* Colormap Function Select Register 4 (RW) */
+#define B2_CFS5                           0x00800114 /* Colormap Function Select Register 5 (RW) */
+#define B2_CFS6                           0x00800118 /* Colormap Function Select Register 6 (RW) */
+#define B2_CFS7                           0x0080011C /* Colormap Function Select Register 7 (RW) */
+#define B2_CFS8                           0x00800120 /* Colormap Function Select Register 8 (RW) */
+#define B2_CFS9                           0x00800124 /* Colormap Function Select Register 9 (RW) */
+#define B2_CFS10                          0x00800128 /* Colormap Function Select Register 10 (RW) */
+#define B2_CFS11                          0x0080012C /* Colormap Function Select Register 11 (RW) */
+#define B2_CFS12                          0x00800130 /* Colormap Function Select Register 12 (RW) */
+#define B2_CFS13                          0x00800134 /* Colormap Function Select Register 13 (RW) */
+#define B2_CFS14                          0x00800138 /* Colormap Function Select Register 14 (RW) */
+#define B2_CFS15                          0x0080013C /* Colormap Function Select Register 15 (RW) */
+#define B2_CFS16                          0x00800140 /* Colormap Function Select Register 16 (RW) */
+#define B2_CFS17                          0x00800144 /* Colormap Function Select Register 17 (RW) */
+#define B2_CFS18                          0x00800148 /* Colormap Function Select Register 18 (RW) */
+#define B2_CFS19                          0x0080014C /* Colormap Function Select Register 19 (RW) */
+#define B2_CFS20                          0x00800150 /* Colormap Function Select Register 20 (RW) */
+#define B2_CFS21                          0x00800154 /* Colormap Function Select Register 21 (RW) */
+#define B2_CFS22                          0x00800158 /* Colormap Function Select Register 22 (RW) */
+#define B2_CFS23                          0x0080015C /* Colormap Function Select Register 23 (RW) */
+#define B2_CFS24                          0x00800160 /* Colormap Function Select Register 24 (RW) */
+#define B2_CFS25                          0x00800164 /* Colormap Function Select Register 25 (RW) */
+#define B2_CFS26                          0x00800168 /* Colormap Function Select Register 26 (RW) */
+#define B2_CFS27                          0x0080016C /* Colormap Function Select Register 27 (RW) */
+#define B2_CFS28                          0x00800170 /* Colormap Function Select Register 28 (RW) */
+#define B2_CFS29                          0x00800174 /* Colormap Function Select Register 29 (RW) */
+#define B2_CFS30                          0x00800178 /* Colormap Function Select Register 30 (RW) */
+#define B2_CFS31                          0x0080017C /* Colormap Function Select Register 31 (RW) */
+#define B2_VBC_SIG_EN                     0x008001C0 /* Vid Bus Signature Enable Register ? (RW) */
+#define B2_VBC_SIG                        0x008001C4 /* Vid Bus Signature Register? (RW) */
+#define B2_DUM                            0x00800240 /* Display Unit Master Register (RW) */
+#define B2_ABMAP                          0x00800244 /* Attribute Block BMAP Register (RW) */
+#define B2_CKEY_HI                        0x00800248 /* Color Key High Register (RW) */
+#define B2_CKEY_LO                        0x0080024C /* Color Key Low Register (RW) */
+#define B2_CALPHA                         0x00800250 /* Constant Alpha Register (RW) */
+#define B2_CCBC                           0x00800254 /* Color Conversion Brightness & Contrast Register (RW) */
+#define B2_OMC                            0x00800260 /* Overlay Miscellaneous Control Register (RW) */
+#define B2_OTLS                           0x00800264 /* Overlay Transparency LUT Select Register (RW) */
+#define B2_OXYO                           0x00800268 /* Overlay Visible XY Offset Register (RW) */
+#define B2_OBS                            0x0080026C /* Overlay Buffer Select Register (RW) */
+#define B2_OBMAP0                         0x00800270 /* Overlay Primary Buffer Block BMAP Register (RW) */
+#define B2_OBMAP1                         0x00800274 /* Overlay Secondary Buffer Block BMAP Register (RW) */
+#define B2_OUL                            0x00800278 /* Overlay Upper Left Register (RW) */
+#define B2_OLR                            0x0080027C /* Overlay  Lower Right Register (RW) */
+#define B2_ODS                            0x00800280 /* Overlay  Data Size Register (RW) */
+#define B2_OSCALE                         0x00800284 /* Overlay Scale Register (RW) */
+#define B2_IMD                            0x00800288 /* Image Depth Register (RW) */
+#define B2_IMC0                           0x00800300 /* Image Miscellaneous Control 0 Register (RW) */
+#define B2_IMC1                           0x00800304 /* Image Miscellaneous Control 1 Register (RW) */
+#define B2_IMC2                           0x00800308 /* Image Miscellaneous Control 2 Register (RW) */
+#define B2_IMC3                           0x0080030C /* Image Miscellaneous Control 3 Register (RW) */
+#define B2_IMC4                           0x00800310 /* Image Miscellaneous Control 4 Register (RW) */
+#define B2_IMC5                           0x00800314 /* Image Miscellaneous Control 5 Register (RW) */
+#define B2_IMC6                           0x00800318 /* Image Miscellaneous Control 6 Register (RW) */
+#define B2_IMC7                           0x0080031C /* Image Miscellaneous Control 7 Register (RW) */
+#define B2_IBMAP0                         0x00800320 /* Image Primary BMAP Register (RW) */
+#define B2_IBMAP1                         0x00800324 /* Image Secondary BMAP Register (RW) */
+#define B2_WAIT_HSYNC                     0x00800330 /* Wait for Horizontal retrace sync Register (RW) */
+#define B2_IBS0                           0x00800340 /* Image Buffer Select 0 Register (RW) */
+#define B2_IBS1                           0x00800344 /* Image Buffer Select 1 Register (RW) */
+#define B2_IBS2                           0x00800348 /* Image Buffer Select 2 Register (RW) */
+#define B2_IBS3                           0x0080034C /* Image Buffer Select 3 Register (RW) */
+#define B2_IBS4                           0x00800350 /* Image Buffer Select 4 Register (RW) */
+#define B2_IBS5                           0x00800354 /* Image Buffer Select 5 Register (RW) */
+#define B2_IBS6                           0x00800358 /* Image Buffer Select 6 Register (RW) */
+#define B2_IBS7                           0x0080035C /* Image Buffer Select 7 Register (RW) */
+#define B2_ICLR0                          0x00800360 /* Image Clear 0 Register (RW) */
+#define B2_ICLR1                          0x00800364 /* Image Clear 1 Register (RW) */
+#define B2_ICLR2                          0x00800368 /* Image Clear 2 Register (RW) */
+#define B2_ICLR3                          0x0080036C /* Image Clear 3 Register (RW) */
+#define B2_ICLR4                          0x00800370 /* Image Clear 4 Register (RW) */
+#define B2_ICLR5                          0x00800374 /* Image Clear 5 Register (RW) */
+#define B2_ICLR6                          0x00800378 /* Image Clear 6 Register (RW) */
+#define B2_ICLR7                          0x0080037C /* Image Clear 7 Register (RW) */
+/*  End of Video Display Processor Registers  */
+
+/*  Start of Reserved Address Space  */
+/*  End of  Reserved Address Space  */
+
+/*  Start of Video Out Registers  */
+/*  End of  Video Out Registers  */
+
+/*  Start of Video Out Registers  */
+/*  End of Video Out Registers  */
+
+/*  Start of Video Out Registers  */
+/*  End of  Video Out Registers  */
+
+/*  Start of  Video Out Registers  */
+/*  Start Of Reserved For Digital Video Out Registers  */
+#define B2_EN_AR_L                        0x00820200 /* Encoder Address Register for LUT  (RW) */
+#define B2_EN_DR_L                        0x00820204 /* Encoder Data Register for LUT  (RW) */
+#define B2_EN_AR_C                        0x00820208 /* Encoder Address Register for Control Stack (RW) */
+#define B2_EN_DR_C                        0x0082020C /* Encoder Data Register for Control Stack (RW) */
+#define B2_CCC1                           0x00820210 /* Colorspace Conversion Coefficient Byte 1 (RW) */
+#define B2_CCC2                           0x00820214 /* Colorspace Conversion Coefficient Byte 2 (RW) */
+#define B2_CCC3                           0x00820218 /* Colorspace Conversion Coefficient Byte 3 (RW) */
+#define B2_CCC4                           0x0082021C /* Colorspace Conversion Coefficient Byte 4 (RW) */
+#define B2_R_R                            0x00820220 /* Readback Red Register (RW) */
+#define B2_R_G                            0x00820224 /* Readback Green Register (RW) */
+#define B2_R_B                            0x00820228 /* Readback Blue Register (RW) */
+#define B2_R_ID                           0x0082022C /* Readback Board ID Register (RW) */
+#define B2_S_CTRL                         0x00820230 /* Video Out Status/Control Register (RW) */
+#define B2_END_OF_VIDBUS                  0xFFFFFFFE /*  Bogus Address Used For .h File Auto Generation */
+/*  End Of Reserved For Digital Video Out Registers  */
+
+/*  End of  Video Out Registers  */

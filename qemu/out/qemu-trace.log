@@ -1,0 +1,439 @@
+visualizefx_realize HP VISUALIZE fx: realize vendor 0x103c device 0x100a
+visualizefx_ctl_read ctl read  off 0x82022c = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x0000000b (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000e (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x0000000b (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000e (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x0000000b (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000e (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000000 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x00000008 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000001 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000007 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000f size 4
+visualizefx_ddc_write DDC  write 0x0000000d (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000005 size 4
+visualizefx_ddc_write DDC  write 0x00000004 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x00000000 size 4
+visualizefx_ddc_write DDC  write 0x00000002 (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ctl_read ctl read  off 0x8000d4 = 0x0000000a size 4
+visualizefx_ddc_write DDC  write 0x0000000b (bit-bang I2C)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_vhal_write VHAL write 0x04000500 active 1024 lines x 1280 pixels
+visualizefx_vtg_write VTG  write 0x00260301 (vertical timing)
+visualizefx_ctl_read ctl read  off 0x800044 = 0x00000000 size 4
+visualizefx_cfg_write CFG  write 0x000c0000 (sync polarity / DAC enable)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4
+visualizefx_ctl_read ctl read  off 0x800044 = 0x000c0000 size 4
+visualizefx_cfg_write CFG  write 0x000c0000 (sync polarity / DAC enable)
+visualizefx_ctl_read ctl read  off 0x641400 = 0x00000fff size 4

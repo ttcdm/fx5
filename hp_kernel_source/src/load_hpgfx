@@ -1,0 +1,24 @@
+#!/bin/sh
+module="hpgfx"
+device="hpgfx"
+group="wheel"
+mode="664"
+
+./setkloglevel 8
+# invoke insmod with all arguments we got
+#/sbin/insmod -v ./$module.o $module=debug $* || exit 1
+#/sbin/insmod -v $module $module="debug;nodma" $* || exit 1
+#/sbin/insmod -v ./$module.o $module="debug" $* || exit 1
+/sbin/insmod -v $module.o $* || exit 1
+
+#major=10
+#minor=`cat /proc/misc | awk "\\$2==\"$module\" {print \\$1}"`
+
+# Remove stale nodes and replace them, then give gid and perms
+# Usually the script is shorter, it's hpgfx that has several devices in it.
+
+#rm -f /dev/${device}
+#mknod /dev/${device} c $major $minor
+#chgrp $group /dev/${device}
+#chmod $mode  /dev/${device}
+

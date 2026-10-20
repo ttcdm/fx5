@@ -1,0 +1,17 @@
+This directory contains source for the Visualize FX graphics kernel module
+(hpgfx.o).
+
+This makefile can build the module in both UP and SMP modes without rebooting
+the system.  The resulting kernel module is [UP,SMP]/hpgfx.o.
+  "make" will build it in both UP and SMP modes.
+  "make up"  will only build the UP module.
+  "make smp" will only build the SMP module.
+  "make install" will build both and install them into
+      /lib/modules/<kernelrev>[smp]/video
+
+Note that portions of this source code are licensed under one or both
+of the Gnu General Public License (GPL) and Precision Insight's
+X-style license.  By the conditions of the GPL, this source code or
+portions thereof cannot be used in software not licensed by the GPL.
+Please see the accompanying file "COPYING" for legal information about
+this Software.

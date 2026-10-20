@@ -1,0 +1,78 @@
+# The "*" is replaced by the  display number of the X server. 
+# For example, if the X server is invoked using the command X :0, the 
+# X0devices file is used.
+
+# This X*devices file defines the input devices opened by the X server 
+# during initialization.
+
+# This file is not required.  The X server correctly initializes itself 
+# and chooses default input devices as best as possible
+# if this file does not exist.
+#
+# If the machine on which the X server is running supports input
+# devices via the DIN interface, the DIN keyboard and mouse will be used
+# as the default X keyboard and pointer devices.
+#
+# This is an example of a valid X*devices file.
+# Not all of the following entries would normally be in the same file.
+# Entries can be in any order, HOWEVER,
+# Where conflicts occur, the last conflicting entry is used.
+
+# Blank lines and comments (text following a '#') are ignored.
+# Each entry occupies a single line.
+# Fields in an entry are separated by spaces or tabs.
+
+#******************************************************************************
+#
+# The X server can be configured to initialize itself with no input devices:
+#
+
+#first	NULL	keyboard		# the X keyboard is a null device
+#first	NULL	pointer  		# the X pointer is a null device
+
+
+#******************************************************************************
+#
+# Some RS-232 input devices are supported by dynamically loaded drivers.
+# The driver specified by the "Name" keyword must reside in the directory
+# /usr/X11R6/hp/lib/extensions.
+#
+
+#******************************************************************************
+#
+# To use input devices as the X pointer or X keyboard, specify
+# "Pointer" or "Keyboard" with the "Use" keyword.
+#
+
+#Begin_Device_Description
+#Name	driver.1
+#Use	Pointer
+#Path	/dev/ttyS1
+#End_Device_Description
+
+#******************************************************************************
+#
+# To merge the input from these devices with that from the X pointer or X 
+# keyboard, specify "Other" with the "Use" keyword.
+#
+
+#Begin_Device_Description
+#Name	driver.1
+#Use	Other
+#Path	/dev/ttyS1
+#End_Device_Description
+
+#******************************************************************************
+# 
+# To configure the Xserver to use a Wacom tablet (Intuos model), uncomment
+# the following lines below.  The "Path" may need to change depending on
+# which serial port the tablet is connected.  The "Use Other" specification
+# will merge the tablet with that of the X pointer.  To access the tablet
+# as an XInput extension device, change that line to be "Use Extension".
+#
+#Begin_Device_Description
+#Name   wacom.1
+#Use    Other
+#Path   /dev/ttyS1
+#End_Device_Description
+

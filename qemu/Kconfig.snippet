@@ -1,0 +1,7 @@
+# HP VISUALIZE fx5/fx10 probe/modeset harness (appended to hw/display/Kconfig).
+# default y if PCI_DEVICES => built into every target that pulls in the default
+# PCI device set (x86_64-softmmu does), so `-device visualizefx` just works.
+config VISUALIZEFX
+    bool
+    default y if PCI_DEVICES
+    depends on PCI

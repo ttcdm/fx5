@@ -1,0 +1,439 @@
+##############################################################################
+#
+# Description of the X*screens Configuration File
+# -----------------------------------------------
+#
+# This file belongs in /etc/X11/X*screens, where "*" is the display number of
+# the server.  For example, the "X0screens" file is used when the $DISPLAY
+# environment variable is set to <hostname>:0.<screen> and the server is
+# invoked using the ":0" option.
+#
+# The X*screens file is used to specify:
+# - For each screen
+#      what device file to use (required)
+#      the default visual
+#      monitor settings
+#      device-dependent screen options
+#
+###############################################################################
+
+###############################################################################
+#
+# Syntax Guidelines
+# -----------------
+#
+# - Blank lines and comments (text following '#') are ignored.
+# - Entries can occupy more than a single line.
+# - All symbols in the file are recognized case-insensitive.
+#
+###############################################################################
+
+###############################################################################
+#
+# X*screens Format
+# ----------------
+#
+#    Items must appear in the X*screens file in the order that they are
+#    specified below.
+#
+#    [ServerOptions
+#       <server_option>
+#       .
+#       .
+#       <server_option>]
+#
+#    {Screen <device_name>}                                     <------+
+#                                                                      |
+#    [DefaultVisual                                                    |
+#       [Class <visual_class>]                                         |
+#       [Depth <depth>]                                                |
+#       [Layer <layer>]                                                |
+#       [Transparent]]                                                 |
+#                                                                      |
+#    {ScreenOptions                                                    |
+#        {Linux_BusId <bus:device:func>}                               |
+#        {MonitorRefreshRate <width,height,pixel_clock(kHz)>} ||       |
+#        {MonitorTimingData <hdisplay, hsync_start, hsync_end, htotal, |
+#                            vdisplay, vsync_start, vsync_end, vtotal, |
+#                            pixel_clock(kHz)>}                        |
+#        [OverlayTransparentIndex0]                                    |
+#        [EnableStereoVisuals]                                         |
+#        [EnableDma]}                                           <------+
+#
+#                                                       This block referred
+#                                                       to as a "Screen Entry"
+#
+#    Square brackets ("[" and "]") denote optional items.  Angle brackets
+#    ("<" and ">") denote values to be specified.  A double-vertical line 
+#    ("||") denotes that ONE of the "or'ed" values (items surrounded by curly
+#    braces, "{" and "}") must be included.
+#
+# DESCRIPTION
+#
+#    The minimum X*screens file contains the Screen, Linux_BusId, and either
+#    the MonitorRefreshRate or MonitorTimingData entries. 
+#    For example:
+#
+#         Screen /dev/mem
+#         ScreenOptions
+#	         Linux_BusId	1:1:0
+#                MonitorRefreshRate 1280,1024,135000
+#                OverlayTransparentIndex0
+#
+#    ServerOptions
+#    -------------
+#
+#        AltRIsAltGr
+#          This server option enables keyboard mode switching of the
+#          right Alt key.  Be default, the right and left Alt keys
+#          behave identically.  Many international keyboards, however,
+#          have an AltGr key in place of the right Alt key.  The desired
+#          effect of the AltGr key is to access alternate characters.
+#          This ServerOption will enable this behavior.
+#
+#    ScreenEntries
+#    -------------
+#
+#       The minimum screen entry is a line with the keyword "Screen" followed
+#       by a screen device file.
+#
+#       Optional specifications for default visual may follow this minimal 
+#       screen description line.
+#
+#       DefaultVisual:
+#
+#          This optional part of the format specifies the default visual that
+#          the screen uses.  Valid keywords following the "DefaultVisual"
+#          keyword are "Class", "Depth", "Layer", and "Transparent".
+#
+#          If no default visual is specified, then the standard default visual
+#          class, depth, layer, and transparency for the graphics device is
+#          used.
+#
+#          Not all default visual specifications will work on all devices.
+#
+#          Class <StaticGray | GrayScale | StaticColor | PseudoColor |
+#                 TrueColor | DirectColor>
+#             Specify the class of the default visual.
+#
+#          Depth <depth_value>
+#             Specify the depth of the default visual (for example 8 or 24).
+#
+#          Layer <Image | Overlay>
+#             Specify the layer of the default visual.
+#
+#          Transparent
+#             Specify that a visual with an application-accessible transparent
+#             entry in the default colormap be used.
+#
+#
+#    ScreenOptions
+#    -------------
+#
+#       Screen options are device-dependent settings. It specifies the 
+#       location of the graphics card and monitor settings.  The bus 
+#       id along with either the monitor refresh rate or timing data 
+#       must be specified.  The MonitorTimingData option will override
+#       the MonitorRefreshRate option.  
+#
+#       Linux_BusId:
+#          Specify the bus location of the graphics card.  The location is
+#          indicated by bus_number:device_number:func_number 
+#
+#       MonitorRefreshRate:
+#          The standard VESA mode timings corresponding to the specified 
+#          resolution and pixel clock is used.  If an unknown specification 
+#          is given, the X server defaults to 1280x1024 @75Hz.
+#
+#       MonitorTimingData:
+#          If a standard VESA mode is not desired, then the individual
+#          timing data can be specified here.  The first four numbers are the
+#          horizontal timings followed by the vertical timings.  The last
+#          number is the pixel clock in kHz. 
+#
+#	OverlayTransparentIndex0:
+#	   By default, the transparent index for overlays is 255.  This
+#	   option remaps the transparent color to index 0 (zero).
+#
+#       EnableStereoVisuals:
+#          By default, stereoscopic windows are not enabled for allocation
+#          because of excessive framebuffer memory use.  This option allows
+#          stereo-enabled applications to create a stereo-window at 
+#          up to 1280 x 1024 x 110Hz.  (CAUTION: Do not overdrive your
+#          monitor beyond its capabilities - damage to screen and system
+#          can result.  NOTE: Flicker may occur on some monitors due to 
+#          their slower performing [ability to refresh] phosphors.)
+#
+#       EnableDma:
+#          Enables X-based 2D direct memory access (DMA) on supported devices.  
+#          Can increase performance of some X primitives requiring large memory 
+#          transfers such as bitmaps.  Only affects performance of 2D X 
+#          operations.
+#
+# ----------------------------------------------------------------------------
+#
+#    Multiple Displays
+#    -----------------
+#
+#       Multiple graphics cards in a workstation can be configured
+#       for several modes of operation:
+#
+#       ----------------------------------------------------------------------
+#       Multi-Screen
+#          A configuration in which a single X server with a mouse and 
+#          keyboard drives multiple graphics devices (where each display
+#          is a different X screen) concurrently while allowing the cursor,
+#          not windows, to be moved between displays.
+#
+#              +----------+        +-----+        +----------+ 
+#              | Device 1 | ------ | SPU | ------ | Device 2 |
+#              +----------+        +-----+        +----------+
+#                host:0.0           |   |           host:0.1
+#                                  kbd  ms
+#
+#          Multi-Screen displays are configured using one Screen Entry
+#          per device.
+#
+#              [ServerOptions ...]
+#               
+#              {Screen1 Entry
+#                [DefaultVisual ...]
+#                {ScreenOptions
+#                   {Linux_BusId ...}
+#                   {MonitorRefreshRate ...}
+#                   ... }}
+#
+#              {Screen2 Entry
+#                [DefaultVisual ...]
+#                {ScreenOptions
+#                   {Linux_BusId ...}
+#                   {MonitorRefreshRate ...}
+#                   ... }}
+#
+#       ----------------------------------------------------------------------
+#       Single Logical Screen (SLS)
+#          A configuration in which a single X server with a mouse and 
+#          keyboard drives multiple graphics devices (must be the same type)
+#          concurrently while allow the displays to emulate a large single
+#          screen.  Windows may move between displays.
+#
+#                                 host:0.0
+#                          +----------+----------+ 
+#                          | Device 1 | Device 2 |
+#                          +----------+----------+ 
+#                                   |   |
+#                                  +-----+
+#                                  | SPU |
+#                                  +-----+ 
+#                                   |   | 
+#                                  kbd  ms
+#
+#          Single Logical Screen displays are configured using a modified
+#          Screen Entry for all devices.
+#
+#              [ServerOptions ...]
+#               
+#              {SingleLogicalScreen nRows mCols
+#                <bus:device:func> ... <bus:device:func>}
+#
+#                [DefaultVisual ...]
+#                {ScreenOptions
+#                   {MonitorRefreshRate ...}
+#                   ... }}
+#
+#          Three major modifications to note:
+#              1) SingleLogicalScreen nRows mCols
+#                   busID ... busID
+#
+#                 nRows = number of "rows" for monitor grid
+#                 mCols = number of "columns" for monitor grid
+#                 product of nRows times mCols is less than or equal to two
+#                 (due to power restrictions for graphics cards)
+# 
+#                 busID = AGP (1:1:0) and PCI slot IDs created by graphics 
+#                         kernel module for each card located in /proc/dri/
+#
+#              2) {Linux_BusID <..>} screen option is not required for SLS since
+#                 the bus IDs are part of the SingleLogicalScreen specification.
+#
+#              3) {Screen <device_name>} declaration is not a part of the SLS
+#                 declaration.  It should not be specified here.
+#
+#          Examples:
+#
+#              +----------+----------+ 
+#              | Device 1 | Device 2 |
+#              +----------+----------+ 
+#
+#              SingleLogicalScreen 1 2
+#                 1:1:0 2:1:0
+#          
+#              +----------+
+#              | Device 1 |
+#              +----------+
+#              | Device 2 |
+#              +----------+
+#
+#              SingleLogicalScreen 2 1
+#                 1:1:0 2:1:0
+#
+#          Minimum SLS specification for two displays:
+#
+#              SingleLogicalScreen 1 2
+#                 1:1:0 2:1:0
+#              ScreenOptions
+#                      MonitorRefreshRate 1280,1024,135000 
+#                      OverlayTransparentIndex0
+#
+# ----------------------------------------------------------------------------
+#
+#    FX 5/10 graphic cards support the following standard VESA modes:
+#
+#    640x480 75Hz VESA 
+#        MonitorRefreshRate 640,480,31500
+#        MonitorTimingData 640,656,720,840,480,481,484,500,31500
+#
+#    640x480 85Hz VESA
+#        MonitorRefreshRate 640,480,36000
+#        MonitorTimingData 640,696,752,832,480,481,484,509,36000
+#
+#    800x600 60Hz VESA 
+#        MonitorRefreshRate 800,600,40000
+#        MonitorTimingData 800,840,968,1056,600,601,605,627,40000
+#
+#    800x600 75Hz VESA 
+#        MonitorRefreshRate 800,600,49500
+#        MonitorTimingData 800,816,896,1056,600,601,604,625,49500
+#
+#    800x600 85Hz VESA 
+#        MonitorRefreshRate 800,600,56250
+#        MonitorTimingData 800,832,896,1048,600,601,604,631,56250
+#
+#    1024x768 60Hz VESA
+#        MonitorRefreshRate 1024,768,65000
+#        MonitorTimingData 1024,1048,1184,1344,768,771,777,806,65000
+#
+#    1024x768 75Hz VESA
+#        MonitorRefreshRate 1024,768,78750
+#        MonitorTimingData 1024,1040,1136,1312,768,769,772,800,78750
+#
+#    1024x768 85Hz VESA
+#        MonitorRefreshRate 1024,768,94500
+#        MonitorTimingData 1024,1072,1168,1376,768,769,772,808,94500
+#
+#    1280x1024 60Hz VESA
+#        MonitorRefreshRate 1280,1024,108000
+#        MonitorTimingData 1280,1328,1440,1640,1024,1025,1028,1066,108000
+#
+#    1280x1024 75Hz VESA
+#        MonitorRefreshRate 1280,1024,135000 
+#        MonitorTimingData 1280,1296,1440,1688,1024,1025,1028,1066,135000
+#
+#    1280x1024 85Hz VESA
+#        MonitorRefreshRate 1280,1024,157500
+#        MonitorTimingData 1280,1344,1504,1728,1024,1025,1028,1072,157500
+#
+#    1600x1200 60Hz VESA
+#        MonitorRefreshRate 1600,1200,162000
+#        MonitorTimingData 1600,1664,1856,2160,1200,1201,1204,1250,162000
+#
+#    1600x1200 75Hz VESA
+#        MonitorRefreshRate 1600,1200,202500
+#        MonitorTimingData 1600,1664,1856,2160,1200,1201,1204,1250,202500
+#
+#    1600x1200 85Hz VESA
+#        MonitorRefreshRate 1600,1200,229500
+#        MonitorTimingData 1600,1664,1856,2160,1200,1201,1204,1250,229500
+#
+#    Common non-standard VESA modes:
+#
+#    1600x1024 76Hz VESA
+#        MonitorTimingData 1600,1632,1792,2096,1024,1027,1030,1070,170000
+#
+#    1920x1200 50Hz VESA 
+#        MonitorTimingData 1920,1928,2200,2480,1200,1201,1204,1233,152892
+#
+#    1920x1200 60Hz VESA
+#        MonitorTimingData 1920,1936,2208,2496,1200,1201,1204,1239,185553
+#
+#    1920x1200 72Hz VESA
+#        MonitorTimingData 1920,1944,2224,2528,1200,1201,1204,1247,226974
+#
+# ----------------------------------------------------------------------------
+#
+#    3D Stereoscopic Timing VESA modes:
+#        These timings are appropriate for enabling stereoscopic
+#        viewing with 3D rendering applications.  
+#        
+#        NOTICE: May not work with some multisync monitors due to
+#                high frequencies.  Do not overdrive your monitor
+#                if it shows difficulties matching these timings.
+#                Slower timings from the above section can be used 
+#                at the cost of more visual flicker in 3D images.
+#                Use of these timings is at your own risk.
+#
+#        NOTICE: This software revision currently supports the 
+#                allocation of only one stereo window per screen.
+#
+#    800x600 120Hz VESA (Stereo)
+#        MonitorTimingData 800,856,944,1088,600,601,604,643,83950
+#
+#    1024x768 120Hz VESA (Stereo)
+#        MonitorTimingData 1024,1104,1216,1408,768,769,772,823,139054
+#
+#    1280x1024 100Hz VESA (Stereo)
+#        MonitorTimingData 1280,1376,1520,1760,1024,1025,1028,1085,190960
+#
+#    1280x1024 110Hz VESA (Stereo)
+#        MonitorTimingData 1280,1376,1520,1760,1024,1025,1028,1091,211218
+#
+##############################################################################
+
+
+##############################################################################
+#
+# Sample X*screens Files
+# ----------------------
+#
+# Below are two sample X*screens files.  To use:
+# 
+#     1. Determine if international keyboard support is required.  
+#        Uncomment out the "ServerOptions" and appropriate line(s) after it. 
+#
+#     2. Select either sample "A" or "B".  ("A" is enabled by default.)
+#        Remove the leading "#" characters to enable.  Comment out the rest.
+#
+#        Note - either the MonitorRefreshRate or MonitorTimingData can be 
+#               used but not both
+#
+
+# ----------------------------------------------------------------------------
+# Enable two lines below for international keyboards requiring AltR = AltGr
+# 
+# ServerOptions
+#       AltRIsAltGr
+
+# ----------------------------------------------------------------------------
+# Sample A: single monitor configuration 
+#
+Screen /dev/mem
+DefaultVisual class TrueColor Depth 24
+ScreenOptions
+	Linux_BusId	1:1:0
+        MonitorRefreshRate 1280,1024,135000 
+#       MonitorTimingData 1280,1296,1440,1688,1024,1025,1028,1066,135000
+        OverlayTransparentIndex0
+
+
+# ----------------------------------------------------------------------------
+# Sample B: Single Logical Screen (SLS) configuration for two monitors
+#
+# SingleLogicalScreen 1 2
+#	1:1:0 2:1:0
+# DefaultVisual class TrueColor Depth 24
+# ScreenOptions
+#        MonitorRefreshRate 1280,1024,135000 
+##       MonitorTimingData 1280,1296,1440,1688,1024,1025,1028,1066,135000
+#        OverlayTransparentIndex0
+
+

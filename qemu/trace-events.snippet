@@ -1,0 +1,10 @@
+# HP VISUALIZE fx5/fx10 probe/modeset harness (appended to hw/display/trace-events)
+# See fx5/qemu/visualizefx.c. These are the trace events enabled with
+#   -trace enable=visualizefx_*     (or  -d trace:visualizefx_*)
+visualizefx_realize(uint32_t vendor, uint32_t device) "HP VISUALIZE fx: realize vendor 0x%04x device 0x%04x"
+visualizefx_ctl_read(uint64_t addr, uint32_t val, unsigned size) "ctl read  off 0x%06" PRIx64 " = 0x%08x size %u"
+visualizefx_ctl_write(uint64_t addr, uint64_t val, unsigned size) "ctl write off 0x%06" PRIx64 " = 0x%08" PRIx64 " size %u"
+visualizefx_cfg_write(uint64_t val) "CFG  write 0x%08" PRIx64 " (sync polarity / DAC enable)"
+visualizefx_vhal_write(uint64_t val, unsigned lines, unsigned pixels) "VHAL write 0x%08" PRIx64 " active %u lines x %u pixels"
+visualizefx_vtg_write(uint64_t val) "VTG  write 0x%08" PRIx64 " (vertical timing)"
+visualizefx_ddc_write(uint64_t val) "DDC  write 0x%08" PRIx64 " (bit-bang I2C)"

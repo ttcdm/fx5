@@ -1,0 +1,252 @@
+###############################################################################
+# This makefile builds the Visualize FX kernel module in either 
+# UP or SMP mode (cross-compiling is fine).
+# *.o files go into the UP or SMP subdirectory.
+###############################################################################
+
+
+############################# CUSTOMIZATION SECTION ###########################
+# Comment/uncomment the following line to disable/enable debugging
+DEBUG = n
+
+# Comment/uncomment the following line to disable/enable SMP support
+# (The Makefile in the directory above sets this appropriately and picks
+# a default that works on the current system.)
+SMP = 1
+
+# Comment/uncomment the following line to disable/enable versioning support
+MODVERSIONS = 1
+
+# Set INCLUDEDIR here,  or it can be specified on the "make" commandline
+INCLUDEDIR = `if [ -d /usr/src/linux/include ] ; then echo /usr/src/linux/include ; else echo /lib/modules/\`uname -r\`/build/include ; fi`
+
+# Where to put the modules (in the subdirectory $(VER))
+MODULEDIR = /usr/X11R6/hp/modules
+
+# Where to symlink MODULEDIR (in $(VER)/$(MODULE_TYPE))
+MODULELINKDIR = /lib/modules
+
+###############################################################################
+ifeq ($(DEBUG),y)
+  DEBFLAGS = -O3 -g -DDEBUG # "-O" is needed (at least) to expand inlines
+else
+  DEBFLAGS = -O3
+endif
+
+INCLUDES = -Idrm -I.. -I.
+CFLAGS = $(DEBFLAGS)
+CFLAGS += -I$(INCLUDEDIR) $(INCLUDES)
+
+# On a development build, header files are in /src/multi...
+# On a user build, they're in ./headers.
+MODCFLAGS=      $(CFLAGS) -D__KERNEL__ -DMODULE -fomit-frame-pointer \
+                -I/src/multi_product_headers \
+		-I/src/multi_product_headers/dsm_headers \
+		-Iheaders -I/usr/include/asm
+ 
+PRGCFLAGS=      $(CFLAGS) -g -ansi -pedantic -DPOSIX_C_SOURCE=199309L \
+		-D_POSIX_SOURCE -D_XOPEN_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE \
+		-I. -I./drm -I.. -I../.. \
+		-I/src/xfree86/xc/programs/Xserver/include -I/src/xfree86/xc/include \
+		-I/src/xfree86/xc/programs/Xserver/hw/xfree86/common \
+                -I/src/multi_product_headers -I/src/multi_product_headers/dsm_headers
+
+CC=gcc
+CPP=$(CC) -E -M -D__DEPEND__ -D__NO_STRING_INLINES
+MODULE_TYPE=video
+
+# **** Handle MODVERSIONS
+ifeq ($(MODVERSIONS),1)
+  MODCFLAGS += -DMODVERSIONS -include $(INCLUDEDIR)/linux/modversions.h
+endif
+
+# **** Handle SMP
+# Extract version number from headers, handle SMP appropriately
+ifeq ($(SMP),1)
+  # Force SMP
+  ODIR=SMP
+  MODCFLAGS += -D__SMP__ -D__BOOT_KERNEL_UP=0 -D__BOOT_KERNEL_SMP=1
+  VER = $(shell $(CC) -E -dM $(INCLUDEDIR)/linux/version.h | \
+      sed 's/smp//gi' - | \
+      awk -F\" '/REL/ {printf "%ssmp", $$2}' - )
+else
+  # Force UP
+  ODIR=UP
+  MODCFLAGS += -U__SMP__ -D__BOOT_KERNEL_UP=1 -D__BOOT_KERNEL_SMP=0
+  VER = $(shell $(CC) -E -dM $(INCLUDEDIR)/linux/version.h | \
+      awk -F\" '/REL/ {print $$2}' - | \
+      sed 's/smp//gi' -)
+endif
+
+# **** End of configuration
+###############################################################################
+
+default_target: all
+
+.PHONY: always
+always:
+
+###############################################################################
+#  Make sure INCLUDEDIR (usually /usr/src/linux) exists.
+#  Do this because kernels 2.4 and greater don't have that link.
+IncludeDirCheck:
+	@ if [ ! -d $(INCLUDEDIR) ]; then \
+	    INCLUDEDIR=$(INCLUDEDIR) ; \
+	    LINUXDIR=`dirname $$INCLUDEDIR` ; \
+	    echo ; \
+	    echo Cannot find directory $$INCLUDEDIR ; \
+	    echo You may need to soft link the appropriate directory in `dirname $$LINUXDIR` to $$LINUXDIR ; \
+	    echo ; \
+	fi
+	@ test -d $(INCLUDEDIR)
+
+all:: IncludeDirCheck
+
+###############################################################################
+# The following section is a workaround for an  interface change
+# in the 2.3 kernel that Red Hat rolled into their 2.2.14+ kernels
+# with no good way to tell.
+# Extended to include another interface change in 2.4, that Red Hat
+# rolled into their 2.2.18+ kernels (again, with no good way to tell
+# the difference).
+
+FASYNC_GREPFOR=fgrep kill_fasync $(INCLUDEDIR)/linux/fs.h | egrep -q
+
+kill_fsync.h: always
+	@ rm -f $@
+	@ if $(FASYNC_GREPFOR) '(fasync_struct[ ]*\*\*.*,.+,.+)'; \
+            then echo "#define KILL_FASYNC_2_4 1" >>$@; \
+          else if $(FASYNC_GREPFOR) '(fasync_struct[ ]*\*.*,.+,.+)'; \
+            then echo "#define KILL_FASYNC_2_3 1" >>$@; \
+          else if $(FASYNC_GREPFOR) '(fasync_struct[ ]*\*.*,.+)'; \
+            then echo "#define KILL_FASYNC_2_2 1" >>$@; fi fi fi
+
+all:: kill_fsync.h
+clean:: ; rm -f kill_fsync.h
+
+###############################################################################
+# Module versioning
+Version.c: always
+	@ echo "Building in whatstring"
+	@ rm -f $@
+	@ echo -n 'static char *_hpVersion="@(#)$(TARGET) $(VER) kernel module:  Version ' >$@
+	@ if [ -r $(BUILD_NUMBER) ]; then \
+	    echo "`cat $(GRAPHICS_VERSION)`-`cat $(BUILD_NUMBER)`\";" >>$@; \
+        else \
+	  if [ -r $(GRAPHICS_VERSION) ]; \
+	  then echo "`cat $(GRAPHICS_VERSION)`\";" >>$@; \
+	  else echo "Unknown\";" >>$@; fi; \
+	  echo "static char *_hpWho=\"@(#)Built on `hostname --long` by `whoami`\";" >>$@; \
+        fi
+	@ echo "static char *_hpWhen=\"@(#)Built `date +%c`\";" >>$@
+
+clean:: ; rm -f Version.c Version.o
+###############################################################################
+CompileCheck: check_compile
+	./check_compile $(ODIR)
+clean:: ; rm -f check_compile
+###############################################################################
+
+PROGOBJS=       drmstat.po xf86drm.po xf86drmHash.po xf86drmRandom.po sigio.po
+PROGHEADERS=    xf86drm.h $(DRMHEADERS)
+GRAPHICS_VERSION=/src/multi_product_headers/linux_version
+BUILD_NUMBER=/src/linux_build_number
+
+TARGET = hpgfx
+
+DRMSRC = \
+      drm/init.c \
+      drm/agpsupport.c \
+      drm/memory.c \
+      drm/proc.c \
+      drm/auth.c \
+      drm/context.c \
+      drm/drawable.c \
+      drm/bufs.c \
+      drm/lists.c \
+      drm/lock.c \
+      drm/ioctl.c \
+      drm/fops.c \
+      drm/vm.c \
+      drm/dma.c \
+
+SRC = hpgfx_drv.c hpgfx_dma.c hpgfx_mtrr.c $(DRMSRC) Version.c
+OFILES = $(SRC:%.c=$(ODIR)/%.o)
+
+all::  CompileCheck $(ODIR)/.depend $(TARGET).o
+
+
+
+# Make sure these targets don't get short-circuited by a file of that name
+.PHONY: all install clean
+
+# This sticks the .o files in $(ODIR) rather than the source directory,
+# so we can keep SMP and UP separate.
+$(ODIR)/$(TARGET).o: $(OFILES)
+	$(LD) -r $(OFILES) -o $@
+$(TARGET).o: $(ODIR)/$(TARGET).o
+	@ rm -f $(TARGET).o
+	ln -s $(ODIR)/$(TARGET).o $(TARGET).o
+
+drmstat: drmstat.c
+	$(CC) $(PRGCFLAGS) $^ -o $@
+
+libdrm.a: $(DRMOBJS)
+	-$(RM) -f $@
+	$(AR) rcs $@ $(DRMOBJS)
+
+# .o files are used for modules
+$(OFILES): $(ODIR)/%.o : %.c
+	@ mkdir -p $(@D)
+	$(CC) $(MODCFLAGS) -c $< -o $@
+
+%.po: %.c
+	$(CC) $(PRGCFLAGS) -DDRM_USE_MALLOC -c $< -o $@
+
+%.s: %.c
+	$(CC) $(MODCFLAGS) -c $< -S
+
+%.i: %.c
+	$(CC) $(MODCFLAGS) -c $< -E
+
+install: all
+	install -d $(MODULEDIR)/$(VER)
+	install -c $(ODIR)/$(TARGET).o $(MODULEDIR)/$(VER)
+	install -d /lib/modules/$(VER)/$(MODULE_TYPE)
+	@rm -f $(MODULELINKDIR)/$(VER)/$(MODULE_TYPE)/$(TARGET).o
+	ln -s $(MODULEDIR)/$(VER)/$(TARGET).o \
+	      $(MODULELINKDIR)/$(VER)/$(MODULE_TYPE)/$(TARGET).o
+
+clean::
+	rm -rf SMP UP	# .o subdirectories
+	rm -f *.o *.po *~ core
+	rm -f drm/*.o drm/*.po drm/*~ drm/core drm/.depend drm/depend
+
+
+###############################################################################
+# Dependency file creation.  This creates [UP,SMP]/.depend, a make dependency
+# list that gets included in this makefile in subsequent makes.
+#
+# This doesn't always get rebuilt -- it'll build it if it isn't there,
+# but if the user changes a dependency chain, they should rebuild it by hand.
+# 
+# (This has to be done file by file with the sed so that the 
+# target *.o files are in $(ODIR)[/drm] rather than the current directory.)
+###############################################################################
+$(ODIR)/.depend:
+	@ echo -e "\n*** Building .depend file for $(ODIR) module ***"
+	@ mkdir -p $(@D)
+	@ rm -f $@
+	$(MAKE) -f Makefile.kernel kill_fsync.h Version.c
+	for file in $(SRC); do \
+	    dir="$$(dirname $$file)/"; \
+	    if [ $$dir = "./" ]; then dir=""; fi; \
+	    $(CPP) $(MODCFLAGS) $$file | \
+	       sed "s#^[A-Za-z0-9_]*\.o:#\$$(ODIR)/$$dir&#" - >> $@; \
+	done
+.PHONY: depend dep
+depend dep: $(ODIR)/.depend
+
+ifeq ($(ODIR)/.depend,$(wildcard $(ODIR)/.depend))
+ include $(ODIR)/.depend
+endif

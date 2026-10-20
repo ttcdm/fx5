@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# A quick and dirty implementation of the old SCCS chestnut "what",
+# a command that searches an executable or library for the key string
+# "@(#)" followed by version information.
+#
+_mywhat='
+@(#)what: $Revision: 1.4 $ $Date: 2000/08/25 22:50:45 $
+'
+#
+
+export PATH=/bin:/usr/bin:$PATH
+
+for file in $*; do
+    if [ ! -r $file ]; then
+        echo "$file:  No such file."
+	continue;
+    fi
+
+    strings $file | grep -q '^@(#)' - >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo "$file:"
+	strings $file | \
+	    grep '^@(#)' | \
+	    sed 's/^@(#)/    /'
+    fi
+done
