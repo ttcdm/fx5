@@ -8,8 +8,9 @@
  *
  * This file is a scaffold: it is structured like a real modern-DRM driver so
  * the GAP functions can be filled in one at a time. It builds cleanly as an
- * out-of-tree module against Linux 6.12 LTS (see ../driver/README.md), but it
- * will not light a display until the GAP functions are done.
+ * out-of-tree module against Linux 6.12 LTS (see README.md; the fbdev setup
+ * call below exists only in 6.11 and 6.12), but it will not light a display
+ * until the GAP functions are done.
  */
 #include <linux/module.h>
 #include <linux/pci.h>
@@ -26,6 +27,10 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_fourcc.h>
 #include <drm/drm_framebuffer.h>	/* struct drm_framebuffer (fb->width/height) */
+#include <drm/drm_damage_helper.h>
+#include <drm/drm_format_helper.h>
+#include <drm/drm_gem_atomic_helper.h>
+#include <linux/iosys-map.h>
 
 #include <linux/bitfield.h>
 #include <linux/iopoll.h>
@@ -90,9 +95,20 @@ static int visfx_ddc_getsda(void *data)
 	return !!(visfx_rd(data, VISFX_DDC) & VISFX_DDC_SDA_PIN);
 }
 
+/* Runs on PCI unbind (devres), after remove() and before the MMIO mappings
+ * registered earlier in probe are torn down. */
+static void visfx_ddc_release(void *data)
+{
+	struct visfx_device *v = data;
+
+	i2c_del_adapter(&v->ddc);
+	v->ddc.algo_data = NULL;	/* visfx_connector_get_modes() keys off this */
+}
+
 static int visfx_ddc_init(struct visfx_device *v)
 {
 	struct i2c_algo_bit_data *b = &v->ddc_bit;
+	int ret;
 
 	b->data = v;
 	b->setsda = visfx_ddc_setsda;
@@ -107,7 +123,12 @@ static int visfx_ddc_init(struct visfx_device *v)
 	v->ddc.algo_data = b;
 	snprintf(v->ddc.name, sizeof(v->ddc.name), "visualizefx DDC");
 
-	return i2c_bit_add_bus(&v->ddc);
+	ret = i2c_bit_add_bus(&v->ddc);
+	if (!ret)
+		ret = devm_add_action_or_reset(&v->pdev->dev, visfx_ddc_release, v);
+	if (ret)
+		v->ddc.algo_data = NULL;	/* not registered: nobody may use it */
+	return ret;
 }
 
 /* ======================================================================== *
@@ -204,17 +225,15 @@ static const struct drm_crtc_helper_funcs visfx_crtc_helper_funcs = {
 	.atomic_disable	= visfx_crtc_atomic_disable,
 };
 
+/* All KMS objects are drmm-managed (drmm_*_init / drmm_*_alloc): none of
+ * their funcs may carry a .destroy callback (the drmm init WARNs and fails
+ * with -EINVAL if one is set); cleanup runs in reverse order on release. */
 static const struct drm_crtc_funcs visfx_crtc_funcs = {
 	.reset			= drm_atomic_helper_crtc_reset,
-	.destroy		= drm_crtc_cleanup,
 	.set_config		= drm_atomic_helper_set_config,
 	.page_flip		= drm_atomic_helper_page_flip,
 	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
 	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
-};
-
-static const struct drm_encoder_funcs visfx_encoder_funcs = {
-	.destroy = drm_encoder_cleanup,
 };
 
 static const struct drm_connector_helper_funcs visfx_connector_helper_funcs = {
@@ -223,64 +242,109 @@ static const struct drm_connector_helper_funcs visfx_connector_helper_funcs = {
 
 static const struct drm_connector_funcs visfx_connector_funcs = {
 	.fill_modes		= drm_helper_probe_single_connector_modes,
-	.destroy		= drm_connector_cleanup,
 	.reset			= drm_atomic_helper_connector_reset,
 	.atomic_duplicate_state	= drm_atomic_helper_connector_duplicate_state,
 	.atomic_destroy_state	= drm_atomic_helper_connector_destroy_state,
 };
 
 /* ======================================================================== *
- *  Simple plane over the dumb framebuffer (SHMEM GEM for the scaffold).
- *  On real hardware the scanout buffer must live in VRAM; swap the GEM
- *  backend for GEM-VRAM/TTM in Phase 2. (STUB)
+ *  Primary plane. The framebuffer is a SHMEM GEM in system RAM; on every
+ *  commit the damaged rectangles are copied into the card's frame-buffer
+ *  window (v->vram, mapped at probe) — the shadow-plane design mgag200 and
+ *  simpledrm use against a memory-mapped aperture, no GEM-VRAM/TTM needed.
+ *  GAP: which part of that window the card scans out, and with what stride
+ *  (IBMAP0/IBMAP1), is unknown, so the image is written linearly at the
+ *  start of the window with the framebuffer's own pitch.
  * ======================================================================== */
 
 static const u32 visfx_formats[] = {
 	DRM_FORMAT_XRGB8888,	/* 24bpp TrueColor — the card's native depth */
 };
 
-/* A full-screen primary plane: no scaling, must cover the CRTC, pinned on. */
+/* A full-screen primary plane: no scaling or positioning, must cover the
+ * CRTC, and the framebuffer must fit the mapped frame-buffer window. */
 static int visfx_plane_atomic_check(struct drm_plane *plane,
 				    struct drm_atomic_state *state)
 {
+	struct visfx_device *v = to_visfx(plane->dev);
 	struct drm_plane_state *new_state =
 		drm_atomic_get_new_plane_state(state, plane);
-	struct drm_crtc_state *crtc_state;
+	struct drm_crtc_state *crtc_state = NULL;
+	struct drm_framebuffer *fb;
+	int ret;
 
-	if (!new_state->crtc)
-		return 0;
+	if (new_state->crtc)
+		crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
 
-	crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
-	return drm_atomic_helper_check_plane_state(new_state, crtc_state,
-						   DRM_PLANE_NO_SCALING,
-						   DRM_PLANE_NO_SCALING,
-						   false, false);
+	/* With no CRTC (plane being disabled) the helper clears ->visible
+	 * and returns 0, so it is always called. */
+	ret = drm_atomic_helper_check_plane_state(new_state, crtc_state,
+						  DRM_PLANE_NO_SCALING,
+						  DRM_PLANE_NO_SCALING,
+						  false, false);
+	if (ret || !new_state->visible)
+		return ret;
+
+	fb = new_state->fb;
+	if ((size_t)fb->pitches[0] * fb->height > v->vram_size) {
+		drm_dbg_kms(&v->drm,
+			    "fb %ux%u pitch %u does not fit the %pa frame-buffer window\n",
+			    fb->width, fb->height, fb->pitches[0], &v->vram_size);
+		return -EINVAL;
+	}
+	return 0;
 }
 
 /*
- * The atomic helper calls funcs->atomic_update() unconditionally for an
- * enabled plane in drm_atomic_helper_commit_planes(); a NULL pointer there
- * oopses during the very first (fbdev) modeset. Programming the real scanout
- * base/stride is still a GAP: the scaffold backs the framebuffer with a SHMEM
- * GEM in system RAM (not card VRAM) and the IBMAP* scanout-register semantics
- * are unknown (see visualizefx_regs.h). So this is a logged near-no-op that
- * lets the commit complete; wire in the IBMAP/stride writes in Phase 2 once
- * VRAM scanout exists.
+ * Copy the damaged part of the shadow (SHMEM) framebuffer into the card's
+ * frame-buffer window. begin_fb_access() (DRM_GEM_SHADOW_PLANE_HELPER_FUNCS)
+ * has already vmapped the GEM into shadow->data. The atomic helper calls
+ * atomic_update() unconditionally for an enabled plane, so this also has to
+ * exist for the very first (fbdev) modeset to complete.
  */
 static void visfx_plane_atomic_update(struct drm_plane *plane,
 				      struct drm_atomic_state *state)
 {
 	struct visfx_device *v = to_visfx(plane->dev);
+	struct drm_plane_state *old_state =
+		drm_atomic_get_old_plane_state(state, plane);
 	struct drm_plane_state *new_state =
 		drm_atomic_get_new_plane_state(state, plane);
+	struct drm_shadow_plane_state *shadow =
+		to_drm_shadow_plane_state(new_state);
+	struct drm_framebuffer *fb = new_state->fb;
+	struct drm_atomic_helper_damage_iter iter;
+	struct drm_rect damage;
+	unsigned int dst_pitch;
+	int idx;
 
-	if (new_state && new_state->fb)
-		drm_dbg_kms(&v->drm,
-			    "plane update %ux%u (scanout base/stride: GAP)\n",
-			    new_state->fb->width, new_state->fb->height);
+	if (!fb || !new_state->visible)
+		return;
+	if (!drm_dev_enter(&v->drm, &idx))
+		return;
+
+	/* GAP: the hardware scanout stride is unknown. Write linearly with the
+	 * framebuffer's pitch; program IBMAP0/IBMAP1 and the stride here once
+	 * their encoding is traced on real hardware. */
+	dst_pitch = fb->pitches[0];
+
+	drm_atomic_helper_damage_iter_init(&iter, old_state, new_state);
+	drm_atomic_for_each_plane_damage(&iter, &damage) {
+		struct iosys_map dst = IOSYS_MAP_INIT_VADDR_IOMEM(v->vram);
+
+		iosys_map_incr(&dst, drm_fb_clip_offset(dst_pitch, fb->format,
+							&damage));
+		drm_fb_memcpy(&dst, &dst_pitch, shadow->data, fb, &damage);
+	}
+
+	drm_dbg_kms(&v->drm,
+		    "plane update %ux%u copied to the fb window (scanout base/stride: GAP)\n",
+		    fb->width, fb->height);
+	drm_dev_exit(idx);
 }
 
 static const struct drm_plane_helper_funcs visfx_plane_helper_funcs = {
+	DRM_GEM_SHADOW_PLANE_HELPER_FUNCS,	/* begin/end_fb_access: vmap */
 	.atomic_check	= visfx_plane_atomic_check,
 	.atomic_update	= visfx_plane_atomic_update,
 };
@@ -292,13 +356,13 @@ static const struct drm_plane_funcs visfx_plane_funcs = {
 	 * drmm_universal_plane_alloc(), which cleans it up automatically.
 	 * Supplying .destroy trips a WARN in __drmm_universal_plane_alloc()
 	 * (!funcs || funcs->destroy) and fails probe with -EINVAL. */
-	.reset			= drm_atomic_helper_plane_reset,
-	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
-	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+	DRM_GEM_SHADOW_PLANE_FUNCS,		/* shadow-plane state handling */
 };
 
 static const struct drm_mode_config_funcs visfx_mode_config_funcs = {
-	.fb_create	= drm_gem_fb_create,
+	/* _with_dirty: fbcon and DIRTYFB callers get a damage commit, which is
+	 * what triggers the plane's copy into the frame-buffer window. */
+	.fb_create	= drm_gem_fb_create_with_dirty,
 	.atomic_check	= drm_atomic_helper_check,
 	.atomic_commit	= drm_atomic_helper_commit,
 };
@@ -344,21 +408,26 @@ static int visfx_kms_init(struct visfx_device *v)
 	if (IS_ERR(primary))
 		return PTR_ERR(primary);
 	drm_plane_helper_add(primary, &visfx_plane_helper_funcs);
+	/* Let userspace/fbcon pass damage rectangles, so atomic_update copies
+	 * only what changed instead of the whole plane every commit. */
+	drm_plane_enable_fb_damage_clips(primary);
 
-	ret = drm_crtc_init_with_planes(drm, &v->crtc, primary, NULL,
-					&visfx_crtc_funcs, NULL);
+	ret = drmm_crtc_init_with_planes(drm, &v->crtc, primary, NULL,
+					 &visfx_crtc_funcs, NULL);
 	if (ret)
 		return ret;
 	drm_crtc_helper_add(&v->crtc, &visfx_crtc_helper_funcs);
 
 	v->encoder.possible_crtcs = drm_crtc_mask(&v->crtc);
-	ret = drm_encoder_init(drm, &v->encoder, &visfx_encoder_funcs,
-			       DRM_MODE_ENCODER_DAC, NULL);
+	ret = drmm_encoder_init(drm, &v->encoder, NULL /* no funcs needed */,
+				DRM_MODE_ENCODER_DAC, NULL);
 	if (ret)
 		return ret;
 
-	ret = drm_connector_init(drm, &v->connector, &visfx_connector_funcs,
-				 DRM_MODE_CONNECTOR_VGA);
+	/* Hand the connector its DDC adapter (sysfs "ddc" link) when it exists. */
+	ret = drmm_connector_init(drm, &v->connector, &visfx_connector_funcs,
+				  DRM_MODE_CONNECTOR_VGA,
+				  v->ddc.algo_data ? &v->ddc : NULL);
 	if (ret)
 		return ret;
 	drm_connector_helper_add(&v->connector, &visfx_connector_helper_funcs);
@@ -474,8 +543,8 @@ static void visfx_pci_remove(struct pci_dev *pdev)
 
 	drm_dev_unplug(&v->drm);
 	drm_atomic_helper_shutdown(&v->drm);
-	if (v->ddc.algo_data)
-		i2c_del_adapter(&v->ddc);
+	/* The DDC adapter (devres) and all KMS objects (drmm) are released by
+	 * the device core after this returns, in reverse registration order. */
 }
 
 /* KNOWN: the five fx5/fx10 board subsystem IDs are 103c:10d4..10d8; match on

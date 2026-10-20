@@ -11,12 +11,13 @@ file. It gives a real port a correct skeleton and all the facts that could be
 established without the hardware, so the remaining work is "fill the marked
 gaps" rather than "start from nothing".
 
-- **Builds cleanly on modern Linux.** Verified as an out-of-tree module against
-  **Linux 6.12 LTS** (Debian trixie kernel headers `6.12.113+deb13-amd64`,
-  x86_64, `make W=1` with no warnings or errors). See "Building" below. A
-  different kernel version may need small API fixups.
-- **No output.** Even though it compiles and would bind the PCI device, the
-  CRTC programming is a stub, so nothing appears on screen.
+- **Builds cleanly on Linux 6.11–6.12.** Verified as an out-of-tree module
+  against **Linux 6.12 LTS** (Debian trixie kernel headers
+  `6.12.113+deb13-amd64`, x86_64, `make W=1` with no warnings or errors). See
+  "Building" below for why the window is exactly 6.11–6.12.
+- **No output.** It compiles, binds the PCI device and copies the framebuffer
+  into the card's frame-buffer window, but the horizontal timing, dot clock
+  and scanout-base programming are stubs, so nothing appears on screen.
 
 ## Building
 
@@ -24,8 +25,13 @@ gaps" rather than "start from nothing".
 make KDIR=/lib/modules/$(uname -r)/build
 ```
 
-`KDIR` defaults to the running kernel's build tree; point it at any 6.x
-kernel-headers tree. The port was build-verified in a container:
+`KDIR` defaults to the running kernel's build tree; point it at a **6.11 or
+6.12** kernel-headers tree. The fbdev console hook the driver uses,
+`drm_fbdev_shmem_setup()`, only exists in those two releases: 6.10 and earlier
+have no `drm/drm_fbdev_shmem.h`, and 6.13 replaced the call with
+`drm_client_setup()` plus `DRM_FBDEV_SHMEM_DRIVER_OPS` in `struct drm_driver`
+(a small, mechanical change when you move forward). The port was
+build-verified in a container:
 
 ```
 # Debian trixie = kernel 6.12 LTS
@@ -63,7 +69,9 @@ HP's GPL source did not contain mode setting (that lived in HP's closed X
 server), so these remain:
 - `HTG` horizontal timing field layout.
 - Dot-clock PLL field layout and reference frequency.
-- Scanout base (`IBMAP*` meaning) and stride; plane `atomic_update`.
+- Scanout base (`IBMAP*` meaning) and stride. The plane already copies the
+  framebuffer into the frame-buffer window (shadow-plane memcpy, as mgag200
+  does); what the card scans out from that window is the open question.
 - `MPC` (DPMS), `ETG`/`STG` fields, cursor image format.
 - Bring-up/reset sequence and how to read the installed memory size.
 - Confirming BAR0 is the card window on the x86 board (`lspci -vv`).
