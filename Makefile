@@ -4,11 +4,11 @@
 #
 #   make -C /lib/modules/$(uname -r)/build M=$(pwd) modules
 #
-# NOTE: this is a SCAFFOLD. It is written against the Linux 6.x DRM API but has
-# not been compiled here (no kernel tree on the authoring machine). Expect to
-# fix small API drift for your exact kernel version before it builds, and know
-# that even once it builds it will not light a display until the GAP items in
-# the source and in PORT_PLAN.md are filled.
+# NOTE: this is a SCAFFOLD. It builds cleanly as an out-of-tree module against
+# Linux 6.12 LTS (verified: kernel headers 6.12.113, x86_64, make W=1 clean).
+# A different kernel version may need small API fixups. Even once it builds it
+# will not light a display until the GAP items in the source and in
+# PORT_PLAN.md are filled.
 
 obj-m += visualizefx.o
 visualizefx-y := visualizefx_drv.o visualizefx_modes.o

@@ -11,10 +11,31 @@ file. It gives a real port a correct skeleton and all the facts that could be
 established without the hardware, so the remaining work is "fill the marked
 gaps" rather than "start from nothing".
 
-- **Not build-verified.** Written against the Linux 6.x DRM API, but no kernel
-  tree was available where it was authored. Expect minor API fixups.
-- **No output.** Even once it compiles and binds the PCI device, the CRTC
-  programming is a stub, so nothing appears on screen.
+- **Builds cleanly on modern Linux.** Verified as an out-of-tree module against
+  **Linux 6.12 LTS** (Debian trixie kernel headers `6.12.113+deb13-amd64`,
+  x86_64, `make W=1` with no warnings or errors). See "Building" below. A
+  different kernel version may need small API fixups.
+- **No output.** Even though it compiles and would bind the PCI device, the
+  CRTC programming is a stub, so nothing appears on screen.
+
+## Building
+
+```
+make KDIR=/lib/modules/$(uname -r)/build
+```
+
+`KDIR` defaults to the running kernel's build tree; point it at any 6.x
+kernel-headers tree. The port was build-verified in a container:
+
+```
+# Debian trixie = kernel 6.12 LTS
+apt-get install -y build-essential linux-headers-amd64 bc libelf-dev
+make -C /usr/src/linux-headers-*-amd64 M=$PWD modules
+```
+
+Output: `visualizefx.ko`, module alias `pci:v0000103Cd0000100A...`
+(HP VISUALIZE fx engine), depends on `drm_kms_helper drm drm_shmem_helper
+i2c-algo-bit`.
 
 ## What is real (KNOWN, from evidence)
 

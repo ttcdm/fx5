@@ -3,8 +3,8 @@
  * visualizefx_drm — modern Linux DRM/KMS driver scaffold for the
  * HP VISUALIZE fx5/fx10 ("Lego") workstation graphics accelerator.
  *
- * STATUS: scaffold. Written against the DRM API shape of Linux 6.x but it is
- * NOT build-verified here and will NOT drive hardware until the GAP items are
+ * STATUS: scaffold. Builds cleanly as an out-of-tree module against the
+ * Linux 6.12 LTS DRM API, but will NOT drive hardware until the GAP items are
  * filled. Every value taken from evidence is marked KNOWN; every placeholder
  * is marked GAP with where the real value must come from.
  *

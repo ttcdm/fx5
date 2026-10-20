@@ -7,22 +7,25 @@
  * framebuffer. Mode programming itself is a GAP (see visfx_crtc_mode_set).
  *
  * This file is a scaffold: it is structured like a real modern-DRM driver so
- * the GAP functions can be filled in one at a time, but it is not
- * build-verified and will not light a display until those are done.
+ * the GAP functions can be filled in one at a time. It builds cleanly as an
+ * out-of-tree module against Linux 6.12 LTS (see ../driver/README.md), but it
+ * will not light a display until the GAP functions are done.
  */
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/aperture.h>
 
 #include <drm/drm_drv.h>
-#include <drm/drm_fbdev_generic.h>
+#include <drm/drm_fbdev_shmem.h>
 #include <drm/drm_gem_shmem_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_managed.h>
 #include <drm/drm_modeset_helper_vtables.h>
 #include <drm/drm_probe_helper.h>
+#include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_fourcc.h>
+#include <drm/drm_framebuffer.h>	/* struct drm_framebuffer (fb->width/height) */
 
 #include <linux/bitfield.h>
 #include <linux/iopoll.h>
@@ -236,15 +239,59 @@ static const u32 visfx_formats[] = {
 	DRM_FORMAT_XRGB8888,	/* 24bpp TrueColor — the card's native depth */
 };
 
+/* A full-screen primary plane: no scaling, must cover the CRTC, pinned on. */
+static int visfx_plane_atomic_check(struct drm_plane *plane,
+				    struct drm_atomic_state *state)
+{
+	struct drm_plane_state *new_state =
+		drm_atomic_get_new_plane_state(state, plane);
+	struct drm_crtc_state *crtc_state;
+
+	if (!new_state->crtc)
+		return 0;
+
+	crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
+	return drm_atomic_helper_check_plane_state(new_state, crtc_state,
+						   DRM_PLANE_NO_SCALING,
+						   DRM_PLANE_NO_SCALING,
+						   false, false);
+}
+
+/*
+ * The atomic helper calls funcs->atomic_update() unconditionally for an
+ * enabled plane in drm_atomic_helper_commit_planes(); a NULL pointer there
+ * oopses during the very first (fbdev) modeset. Programming the real scanout
+ * base/stride is still a GAP: the scaffold backs the framebuffer with a SHMEM
+ * GEM in system RAM (not card VRAM) and the IBMAP* scanout-register semantics
+ * are unknown (see visualizefx_regs.h). So this is a logged near-no-op that
+ * lets the commit complete; wire in the IBMAP/stride writes in Phase 2 once
+ * VRAM scanout exists.
+ */
+static void visfx_plane_atomic_update(struct drm_plane *plane,
+				      struct drm_atomic_state *state)
+{
+	struct visfx_device *v = to_visfx(plane->dev);
+	struct drm_plane_state *new_state =
+		drm_atomic_get_new_plane_state(state, plane);
+
+	if (new_state && new_state->fb)
+		drm_dbg_kms(&v->drm,
+			    "plane update %ux%u (scanout base/stride: GAP)\n",
+			    new_state->fb->width, new_state->fb->height);
+}
+
 static const struct drm_plane_helper_funcs visfx_plane_helper_funcs = {
-	.atomic_check	= drm_plane_helper_atomic_check,
-	/* GAP: .atomic_update must write the scanout base/stride register. */
+	.atomic_check	= visfx_plane_atomic_check,
+	.atomic_update	= visfx_plane_atomic_update,
 };
 
 static const struct drm_plane_funcs visfx_plane_funcs = {
 	.update_plane		= drm_atomic_helper_update_plane,
 	.disable_plane		= drm_atomic_helper_disable_plane,
-	.destroy		= drm_plane_cleanup,
+	/* No .destroy: the plane is allocated with the devres-managed
+	 * drmm_universal_plane_alloc(), which cleans it up automatically.
+	 * Supplying .destroy trips a WARN in __drmm_universal_plane_alloc()
+	 * (!funcs || funcs->destroy) and fails probe with -EINVAL. */
 	.reset			= drm_atomic_helper_plane_reset,
 	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
 	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
@@ -267,7 +314,6 @@ static const struct drm_driver visfx_drm_driver = {
 	.fops			= &visfx_fops,
 	.name			= "visualizefx",
 	.desc			= "HP VISUALIZE fx5/fx10 (scaffold)",
-	.date			= "20260101",
 	.major			= 0,
 	.minor			= 0,	/* 0.0: scaffold, not functional */
 	DRM_GEM_SHMEM_DRIVER_OPS,
@@ -288,6 +334,7 @@ static int visfx_kms_init(struct visfx_device *v)
 	drm->mode_config.min_height = 480;
 	drm->mode_config.max_width = 1920;	/* KNOWN: max listed timing */
 	drm->mode_config.max_height = 1200;
+	drm->mode_config.preferred_depth = 24;	/* card's native TrueColor depth */
 
 	primary = drmm_universal_plane_alloc(drm, struct drm_plane, dev,
 					     0, &visfx_plane_funcs,
@@ -401,7 +448,19 @@ static int visfx_pci_probe(struct pci_dev *pdev,
 	if (ret)
 		return ret;
 
-	drm_fbdev_generic_setup(drm, 24);	/* 24bpp native */
+	/*
+	 * Set up the in-kernel fbdev client (Linux console). The 6.11 fbdev
+	 * refactor removed drm_fbdev_generic_setup(); a SHMEM-backed driver now
+	 * calls the memory-manager-specific helper directly.
+	 *
+	 * The argument is the preferred *bpp*, not the colour depth: the card's
+	 * native TrueColor is 24-bit colour carried in a 32-bit pixel, which is
+	 * DRM_FORMAT_XRGB8888 — the one format the primary plane advertises. Ask
+	 * for 32 bpp so the fbdev client picks XRGB8888; passing 24 makes it pick
+	 * the 3-byte RGB888 the plane does not support ("No compatible format
+	 * found"). mode_config.preferred_depth stays 24 (that is the colour depth).
+	 */
+	drm_fbdev_shmem_setup(drm, 32);
 
 	drm_warn(drm,
 		 "SCAFFOLD: bound %04x:%04x but modeset is a stub; no output yet\n",
