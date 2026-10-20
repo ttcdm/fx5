@@ -14,10 +14,22 @@
  */
 #include <linux/module.h>
 #include <linux/pci.h>
-#include <linux/aperture.h>
+#include <linux/version.h>
 
 #include <drm/drm_drv.h>
 #include <drm/drm_fbdev_shmem.h>
+/*
+ * In-kernel fbdev client setup moved twice. 6.11–6.12 expose
+ * drm_fbdev_shmem_setup(); 6.13 replaced it with drm_client_setup() plus the
+ * DRM_FBDEV_SHMEM_DRIVER_OPS entry in struct drm_driver; 6.15 moved the
+ * drm_client_setup() prototype into drm/clients/. Pull in whichever header the
+ * target kernel needs. (The exact 6.15 boundary is confirmed by build.)
+ */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 15, 0)
+#include <drm/clients/drm_client_setup.h>
+#elif LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0)
+#include <drm/drm_client_setup.h>
+#endif
 #include <drm/drm_gem_shmem_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_managed.h>
@@ -381,6 +393,11 @@ static const struct drm_driver visfx_drm_driver = {
 	.major			= 0,
 	.minor			= 0,	/* 0.0: scaffold, not functional */
 	DRM_GEM_SHMEM_DRIVER_OPS,
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0)
+	/* 6.13+: fbdev client is wired through a driver op + drm_client_setup();
+	 * the macro does not exist on 6.11/6.12, which use drm_fbdev_shmem_setup(). */
+	DRM_FBDEV_SHMEM_DRIVER_OPS,
+#endif
 };
 
 static int visfx_kms_init(struct visfx_device *v)
@@ -529,7 +546,13 @@ static int visfx_pci_probe(struct pci_dev *pdev,
 	 * the 3-byte RGB888 the plane does not support ("No compatible format
 	 * found"). mode_config.preferred_depth stays 24 (that is the colour depth).
 	 */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 13, 0)
+	/* 6.13+: the format is chosen from mode_config.preferred_depth (24 ->
+	 * XRGB8888); the fbdev probe op comes from DRM_FBDEV_SHMEM_DRIVER_OPS. */
+	drm_client_setup(drm, NULL);
+#else
 	drm_fbdev_shmem_setup(drm, 32);
+#endif
 
 	drm_warn(drm,
 		 "SCAFFOLD: bound %04x:%04x but modeset is a stub; no output yet\n",
