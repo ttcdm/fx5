@@ -74,6 +74,12 @@ for applet in sh mount ls cat dmesg insmod sleep poweroff echo grep; do
     ln -sf busybox "$IRD/bin/$applet"
 done
 
+# Static-linked raw-ioctl KMS demo (drives several modesets at runtime so the
+# trace captures VHAL/VTG/CFG for multiple resolutions). Static so it needs no
+# shared libs in the busybox initramfs.
+echo "    building visfx-demo (KMS multi-mode demo)"
+gcc -static -O2 -Wall -o "$IRD/bin/visfx-demo" "$REPO/qemu/visfx-kms-demo.c"
+
 # Copy the dependency chain (decompressing .zst/.xz) in modprobe's load order.
 i=0
 modprobe --show-depends -S "$KVER" visualizefx | awk '$1=="insmod"{print $2}' | \
@@ -117,6 +123,13 @@ dmesg | grep -i -E 'visualize|drm|103c:100a|BUG|Oops|WARNING|RIP:|Call Trace|NUL
 
 echo "=================== /dev/dri ==================="
 ls -l /dev/dri 2>/dev/null || echo "(no /dev/dri)"
+
+echo "=================== DRM state (/sys/class/drm) ==================="
+for s in /sys/class/drm/card0*/status; do [ -e "$s" ] && echo "$s = $(cat "$s")"; done
+for s in /sys/class/drm/card0*/modes; do [ -e "$s" ] && { echo "$s:"; cat "$s"; }; done
+
+echo "=================== KMS demo: multi-mode modeset ==================="
+/bin/visfx-demo || echo "(visfx-demo exited $?)"
 
 echo "=================== done; powering off ==================="
 sync
